@@ -44,6 +44,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 			"Unreconcile Payment Entries",
 			"Serial and Batch Bundle",
 			"Bank Transaction",
+			"Packing Slip",
 		];
 
 		if (!this.frm.doc.__islocal && !this.frm.doc.customer && this.frm.doc.debit_to) {
@@ -137,7 +138,7 @@ erpnext.accounts.SalesInvoiceController = class SalesInvoiceController extends (
 				this.frm.add_custom_button(
 					__("Payment Request"),
 					function () {
-						me.make_payment_request();
+						me.make_payment_request_with_schedule();
 					},
 					__("Create")
 				);

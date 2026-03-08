@@ -4079,6 +4079,12 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 				flt(d.get("conversion_factor"), conv_fac_precision) or conversion_factor
 			)
 
+		if child_item.get("total_weight") and child_item.get("weight_per_unit"):
+			child_item.total_weight = flt(
+				child_item.weight_per_unit * child_item.qty * child_item.conversion_factor,
+				child_item.precision("total_weight"),
+			)
+
 		if d.get("delivery_date") and parent_doctype == "Sales Order":
 			child_item.delivery_date = d.get("delivery_date")
 
@@ -4116,7 +4122,7 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 			child_item.idx = len(parent.items) + 1
 			child_item.insert()
 		else:
-			child_item.save()
+			child_item.save(ignore_permissions=True)
 
 	parent.reload()
 	parent.flags.ignore_validate_update_after_submit = True
@@ -4290,7 +4296,7 @@ def get_missing_company_details(doctype, docname):
 	from frappe.contacts.doctype.address.address import get_address_display_list
 
 	company = frappe.db.get_value(doctype, docname, "company")
-	if doctype == "Purchase Order":
+	if doctype in ["Purchase Order", "Purchase Invoice"]:
 		company_address = frappe.db.get_value(doctype, docname, "billing_address")
 	else:
 		company_address = frappe.db.get_value(doctype, docname, "company_address")
@@ -4386,6 +4392,8 @@ def update_doc_company_address(current_doctype, docname, company_address, detail
 
 	address_field_map = {
 		"Purchase Order": ("billing_address", "billing_address_display"),
+		"Purchase Invoice": ("billing_address", "billing_address_display"),
+		"Sales Order": ("company_address", "company_address_display"),
 		"Sales Invoice": ("company_address", "company_address_display"),
 		"Delivery Note": ("company_address", "company_address_display"),
 		"POS Invoice": ("company_address", "company_address_display"),

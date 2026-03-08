@@ -149,6 +149,7 @@ class PurchaseOrder(BuyingController):
 		supplied_items: DF.Table[PurchaseOrderItemSupplied]
 		supplier: DF.Link
 		supplier_address: DF.Link | None
+		supplier_group: DF.Link | None
 		supplier_name: DF.Data | None
 		supplier_warehouse: DF.Link | None
 		tax_category: DF.Link | None
@@ -165,6 +166,7 @@ class PurchaseOrder(BuyingController):
 		total_qty: DF.Float
 		total_taxes_and_charges: DF.Currency
 		transaction_date: DF.Date
+		transaction_time: DF.Time | None
 	# end: auto-generated types
 
 	def __init__(self, *args, **kwargs):
@@ -189,6 +191,9 @@ class PurchaseOrder(BuyingController):
 	def before_validate(self):
 		self.set_has_unit_price_items()
 		self.flags.allow_zero_qty = self.has_unit_price_items
+
+		if self.is_subcontracted:
+			self.status_updater[0]["source_field"] = "fg_item_qty"
 
 	def validate(self):
 		super().validate()

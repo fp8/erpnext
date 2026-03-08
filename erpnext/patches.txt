@@ -412,6 +412,7 @@ erpnext.patches.v15_0.rename_group_by_to_categorize_by
 execute:frappe.db.set_single_value("Accounts Settings", "receivable_payable_fetch_method", "Buffered Cursor")
 erpnext.patches.v14_0.set_update_price_list_based_on
 erpnext.patches.v15_0.update_journal_entry_type
+erpnext.patches.v15_0.add_bank_transaction_as_journal_entry_reference
 erpnext.patches.v15_0.set_grand_total_to_default_mop
 execute:frappe.db.set_single_value("Accounts Settings", "use_legacy_budget_controller", False)
 erpnext.patches.v15_0.set_cancelled_status_to_cancelled_pos_invoice
@@ -456,6 +457,14 @@ erpnext.patches.v16_0.update_tax_withholding_field_in_payment_entry
 erpnext.patches.v16_0.migrate_tax_withholding_data
 erpnext.patches.v16_0.update_corrected_cancelled_status
 erpnext.patches.v16_0.fix_barcode_typo
+erpnext.patches.v16_0.add_accounting_dimensions_to_journal_template_accounts
 erpnext.patches.v16_0.set_post_change_gl_entries_on_pos_settings
 execute:frappe.delete_doc_if_exists("Workspace Sidebar", "Opening & Closing")
 erpnext.patches.v15_0.create_accounting_dimensions_in_advance_taxes_and_charges
+erpnext.patches.v16_0.set_ordered_qty_in_quotation_item
+erpnext.patches.v16_0.migrate_transaction_deletion_task_flags_to_status # 2
+erpnext.patches.v16_0.update_company_custom_field_in_bin
+erpnext.patches.v15_0.replace_http_with_https_in_sales_partner
+erpnext.patches.v15_0.delete_quotation_lost_record_detail
+erpnext.patches.v16_0.add_portal_redirects
+erpnext.patches.v16_0.complete_onboarding_steps_for_older_sites #2
